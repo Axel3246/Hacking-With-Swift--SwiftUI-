@@ -2,7 +2,7 @@ import UIKit
 
 /*
  
-========= DAY 01 =========
+ ========= DAY 01 =========
  
  */
 
@@ -23,10 +23,10 @@ let decimalNum1 = 1.0
 let decimalNum2 = 3.1416
 
 /* -- SOME STRING METHODS --
-.count -> counts the characters in the string, including spaces
-.uppercased() -> returns the string uppercased
-.hasPrefix([str]) -> checks if string starts with [str]
-.hasSuffic([str]) -> checks if string ends with [str]
+ .count -> counts the characters in the string, including spaces
+ .uppercased() -> returns the string uppercased
+ .hasPrefix([str]) -> checks if string starts with [str]
+ .hasSuffic([str]) -> checks if string ends with [str]
  
  -- SOME NUMBER METHODS --
  .isMultipleOf(of: #)
@@ -37,11 +37,11 @@ let decimalNum2 = 3.1416
  - Double()
  - String()
  - "\()" -> String Interoplation
-*/
+ */
 
 /*
  
-========= DAY 02 =========
+ ========= DAY 02 =========
  
  */
 
@@ -52,8 +52,8 @@ let falseStatus = false
 
 /* -- SOME BOOLEAN METHODS --
  
-.toggle() -> Flips the boolean value
-*/
+ .toggle() -> Flips the boolean value
+ */
 
 // -- Checkpoint 1 - CELSIUS TO FAHRENHEIT
 
@@ -65,7 +65,7 @@ print("Celsius is \(celsius) C° and in Fahrenheit is \(fahrenheit) F°")
 
 /*
  
-========= DAY 03 =========
+ ========= DAY 03 =========
  
  */
 
@@ -94,12 +94,12 @@ let myDictionary1 = [
     "name": "Taylor",
     "job": "Singer",
     "location": "Nashville"
-    ]
+]
 
 /* -- SOME DICT METHODS --
  
  default: -> if no value, we can declare a default to avoid errors
-    ex: print(myDictionary1["name", default: "No Name"]
+ ex: print(myDictionary1["name", default: "No Name"]
  
  */
 
@@ -132,7 +132,7 @@ day = .wednesday
 
 /*
  
-========= DAY 04 =========
+ ========= DAY 04 =========
  
  */
 
@@ -163,7 +163,7 @@ print(Set(arrayCheck2).count)
 
 /*
  
-========= DAY 05 =========
+ ========= DAY 05 =========
  
  */
 
@@ -211,6 +211,28 @@ default:
 }
 
 // Fallthrough if we need auto-decreasing switching cases
+/*
+ let day = 5
+ print("My true love gave to me…")
+ 
+ switch day {
+ case 5:
+ print("5 golden rings")
+ fallthrough
+ case 4:
+ print("4 calling birds")
+ fallthrough
+ case 3:
+ print("3 French hens")
+ fallthrough
+ case 2:
+ print("2 turtle doves")
+ fallthrough
+ default:
+ print("A partridge in a pear tree")
+ }
+ 5 -> 4 -> 3 -> 2 -> 1
+ */
 
 // -- TERNARY CONDITIONAL --
 
@@ -234,7 +256,7 @@ let background = theme == .dark ? "black" : "white"
 
 /*
  
-========= DAY 06 =========
+ ========= DAY 06 =========
  
  */
 
@@ -325,7 +347,7 @@ for i in 1...100{
 
 /*
  
-========= DAY 07 =========
+ ========= DAY 07 =========
  
  */
 
@@ -435,7 +457,7 @@ print(resultTwo)
 
 /*
  
-========= DAY 08 =========
+ ========= DAY 08 =========
  
  */
 
@@ -445,11 +467,11 @@ print(resultTwo)
 
 // No default values
 /*
-func shock(for number: Int){
-    for i in 1...number{
-        print("There may be a shock coming in lap \(i)...")
-    }
-}
+ func shock(for number: Int){
+ for i in 1...number{
+ print("There may be a shock coming in lap \(i)...")
+ }
+ }
  */
 
 // With Default values
@@ -475,21 +497,238 @@ func checkPassword(_ password: String) throws -> String{
     if password == "12345"{
         throw PasswordError.obvious
     }
+    if password.count < 8 {
+        return "OK"
+    } else if password.count < 10 {
+        return "Good"
+    } else {
+        return "Excellent"
+    }
+}
+
+print("")
+let myPassword = "12345"
+
+do {
+    let result = try checkPassword(myPassword)
+    print("Password rating: \(result)")
+} catch PasswordError.short {
+    print("Please use a longer password.")
+} catch PasswordError.obvious {
+    print("I have the same combination on my luggage!")
+} catch {
+    print("There was an error.")
+}
+
+/*
+ 
+ ========= CHECKPOINT 04 =========
+ 
+ */
+
+enum NumberError: Error{
+    case outOfBounds, noRoot
+}
+
+func raizCuadrada(of number: Int) throws -> Int{
+    if number > 10000 || number < 1 {
+        throw NumberError.outOfBounds
+    }
     
+    for i in 1...100{
+        if i*i == number{
+            return i
+        }
+    }
+    throw NumberError.noRoot
+}
+
+let number01 = 100
+do{
+    let result = try raizCuadrada(of: number01)
+    print("Square root is: \(result)")
+} catch NumberError.outOfBounds{
+    print("Number is Out of Bounds")
+} catch NumberError.noRoot{
+    print("Number has no root")
+} catch{
+    print("There was an error.")
 }
 
 
 
 /*
  
-========= DAY 09 =========
+ ========= DAY 09 =========
+ --- CLOSURES---
+ A chunk of code we can pass around and call whenever we want, skipping the creation
+ of a separate function, and just assign the functionality directly to a constant or variable.
+ */
+
+let sayHello = {
+    print("Hello")
+}
+
+sayHello()
+
+/*
+ CLOSURES ALSO ACCEPT PARAMETERS
+ */
+
+let sayHelloTwo = {(name: String) -> String in
+    "Hi \(name)"
+}
+
+sayHelloTwo("Axel")
+
+func greetUser() {
+    print("Hi there!")
+}
+
+greetUser()
+
+var greetCopy = greetUser
+greetCopy()
+
+var typeAnnotationOfGreetCopy: () -> Void = greetUser
+
+func getUserData(for id: Int) -> String{
+    if id == 1989 {
+        return "Taylor Swift"
+    } else {
+        return "Anonymous"
+    }
+}
+
+let data: (Int) -> String = getUserData
+let myUser = data(1989)
+print(myUser)
+
+let team = ["Gloria", "Suzanne", "Piper", "Tiffany", "Tasha"]
+let sortedTeam = team.sorted()
+print(sortedTeam)
+
+func capitanFirst(name1: String, name2: String) -> Bool{
+    if name1 == "Suzanne" {
+        return true
+    } else if name2 == "Suzanne" {
+        return false
+    }
+    return name1 < name2
+}
+
+let sortedCapitan = team.sorted(by: capitanFirst)
+print(sortedCapitan)
+
+//let sortedCapitanTwo = team.sorted(by: {(name1: String, name2: String) -> Bool in
+//    if name1 == "Suzanne" {
+//        return true
+//    } else if name2 == "Suzanne" {
+//        return false
+//    }
+//    return name1 < name2
+//})
+//
+//print(sortedCapitanTwo)
+
+/*
+ i.e: Pass in custom code to adjust how they work, and do so directly – we don’t need to write out a new function just for that one usage.
+ 
+ --- SHORTHAND SYNTAX AND TRAILING CLOSURES ---
  
  */
 
+// Trailing closure (remove by: or any other form if permitted)
+//let sortedCapitanTwo = team.sorted{ name1, name2 in
+//    if name1 == "Suzanne" {
+//        return true
+//    } else if name2 == "Suzanne" {
+//        return false
+//    }
+//    return name1 < name2
+//}
+//
+//print(sortedCapitanTwo)
+
+// Short hand syntax, i.e $0 and $1 == first and second
+let sortedCapitanTwo = team.sorted{
+    if $0 == "Suzanne" {
+        return true
+    } else if $1 == "Suzanne" {
+        return false
+    }
+    return $0 < $1
+}
+print(sortedCapitanTwo)
+
+
+// What if we wanted reverse order?
+let reversedTeam = team.sorted {$0 > $1}
+print(reversedTeam)
+
+// Lets see an example using filter
+let onlyT = team.filter {$0.hasPrefix("T")}
+print(onlyT)
+
+// Now using map
+let teamUppercased = team.map{$0.uppercased()}
+print(teamUppercased)
+
+
+// -- How to accept functions as parameters --
+
+func saluteUser() {
+    print("Hi there again!")
+}
+
+saluteUser()
+
+var saluteCopy: () -> Void = saluteUser
+saluteCopy()
+
+// -- How to pass functions as parameters in functions --
+func makeArray(size: Int, using generator: () -> Int) -> [Int] {
+    var numbers = [Int]()
+
+    for _ in 0..<size {
+        let newNumber = generator()
+        numbers.append(newNumber)
+    }
+
+    return numbers
+}
+
+let rolls = makeArray(size: 10) {
+    Int.random(in: 1...20)
+}
+
+print("Rolls: \(rolls)")
+
+// -- The same with dedicated functions
+
+func generateNumber() -> Int {
+    Int.random(in: 1...20)
+}
+
+let newRolls = makeArray(size: 10, using: generateNumber)
+print("New Rolls: \(rolls)")
+
+//  --- Challenge 5 ---
+
+let luckyNumbers = [7, 4, 38, 21, 16, 15, 12, 33, 31, 49]
+
+//let filteredNumbers = luckyNumbers.filter{$0 % 2 == 1}.sorted{$0 < $1}.map{"\($0) is a lucky number"}
+//for number in filteredNumbers{
+//    print(number)
+//}
+
+luckyNumbers.filter{$0 % 2 == 1}.sorted{$0 < $1}.map{"\($0) is a lucky number"}.forEach{print($0)}
 
 
 /*
  
-========= DAY 10 =========
+ ========= DAY 10 =========
  
  */
+
+
